@@ -154,6 +154,11 @@ class BaseDataset(Dataset):
                     im = cv2.imread(f)  # BGR
             else:  # read image
                 im = cv2.imread(f)  # BGR
+                if im is None:
+                    im = cv2.imread(f, cv2.IMREAD_UNCHANGED)
+                    if len(im.shape)  == 2:
+                        im = np.stack([im, im, im], axis=-1)
+
             if im is None:
                 raise FileNotFoundError(f'Image Not Found {f}')
 
